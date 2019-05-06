@@ -35,9 +35,9 @@ extern "C" {
 
 struct _lv_anim_t;
 
-typedef int32_t(*lv_anim_path_t)(const struct _lv_anim_t*);
+typedef int16_t(*lv_anim_path_t)(const struct _lv_anim_t*);
 
-typedef void (*lv_anim_fp_t)(void *, int32_t);
+typedef void (*lv_anim_fp_t)(void *, int16_t);
 typedef void (*lv_anim_cb_t)(void *);
 
 typedef struct _lv_anim_t
@@ -46,8 +46,8 @@ typedef struct _lv_anim_t
     lv_anim_fp_t fp;                /*Animator function*/
     lv_anim_cb_t end_cb;            /*Call it when the animation is ready*/
     lv_anim_path_t path;            /*An array with the steps of animations*/
-    int32_t start;                  /*Start value*/
-    int32_t end;                    /*End value*/
+    int16_t start;                  /*Start value*/
+    int16_t end;                    /*End value*/
     uint16_t time;                  /*Animation time in ms*/
     int16_t act_time;               /*Current time in animation. Set to negative to make delay.*/
     uint16_t playback_pause;        /*Wait before play back*/
@@ -56,7 +56,7 @@ typedef struct _lv_anim_t
     uint8_t repeat :1;              /*Repeat the animation infinitely*/
     /*Animation system use these - user shouldn't set*/
     uint8_t playback_now :1;        /*Play back is in progress*/
-    uint32_t has_run     :1;        /*Indicates the animation has run it this round*/
+    uint16_t has_run     :1;        /*Indicates the animation has run it this round*/
 } lv_anim_t;
 
 /*Example initialization
@@ -112,14 +112,14 @@ uint16_t lv_anim_count_running(void);
  * @param end end value of the animation
  * @return the required time [ms] for the animation with the given parameters
  */
-uint16_t lv_anim_speed_to_time(uint16_t speed, int32_t start, int32_t end);
+uint16_t lv_anim_speed_to_time(uint16_t speed, int16_t start, int16_t end);
 
 /**
  * Calculate the current value of an animation applying linear characteristic
  * @param a pointer to an animation
  * @return the current value to set
  */
-int32_t lv_anim_path_linear(const lv_anim_t *a);
+int16_t lv_anim_path_linear(const lv_anim_t *a);
 
 /**
  * Calculate the current value of an animation slowing down the start phase

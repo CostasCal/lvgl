@@ -140,10 +140,10 @@ uint16_t lv_anim_count_running(void)
  * @param end end value of the animation
  * @return the required time [ms] for the animation with the given parameters
  */
-uint16_t lv_anim_speed_to_time(uint16_t speed, int32_t start, int32_t end)
+uint16_t lv_anim_speed_to_time(uint16_t speed, int16_t start, int16_t end)
 {
     int32_t d = LV_MATH_ABS((int32_t) start - end);
-    uint32_t time = (int32_t)((int32_t)(d * 1000) / speed);
+    uint32_t time = (int32_t)((d * 1000) / speed);
 
     if(time > UINT16_MAX) time = UINT16_MAX;
 
@@ -159,17 +159,17 @@ uint16_t lv_anim_speed_to_time(uint16_t speed, int32_t start, int32_t end)
  * @param a pointer to an animation
  * @return the current value to set
  */
-int32_t lv_anim_path_linear(const lv_anim_t * a)
+int16_t lv_anim_path_linear(const lv_anim_t * a)
 {
     /*Calculate the current step*/
-    uint16_t step;
+    uint32_t step;
     if(a->time == a->act_time) step = LV_ANIM_RESOLUTION; /*Use the last value if the time fully elapsed*/
-    else step = (a->act_time * LV_ANIM_RESOLUTION) / a->time;
+    else step = ((int32_t)a->act_time * LV_ANIM_RESOLUTION) / a->time;
 
     /* Get the new value which will be proportional to `step`
      * and the `start` and `end` values*/
     int32_t new_value;
-    new_value = (int32_t) step * (a->end - a->start);
+    new_value = step * (a->end - a->start);
     new_value = new_value >> LV_ANIM_RES_SHIFT;
     new_value += a->start;
 
@@ -184,14 +184,14 @@ int32_t lv_anim_path_linear(const lv_anim_t * a)
 int32_t lv_anim_path_ease_in(const lv_anim_t * a)
 {
     /*Calculate the current step*/
-    uint32_t t;
+    uint16_t t;
     if(a->time == a->act_time) t = 1024;
-    else t = (uint32_t)((uint32_t)a->act_time * 1024) / a->time;
+    else t = (uint16_t)((uint16_t)a->act_time * 1024) / a->time;
 
-    int32_t step = lv_bezier3(t, 0, 1, 1, 1024);
+    int16_t step = lv_bezier3(t, 0, 1, 1, 1024);
 
-    int32_t new_value;
-    new_value = (int32_t) step * (a->end - a->start);
+    int16_t new_value;
+    new_value = (int16_t) step * (a->end - a->start);
     new_value = new_value >> 10;
     new_value += a->start;
 
@@ -376,7 +376,7 @@ static void anim_task(void * param)
             if(a->act_time >= 0) {
                 if(a->act_time > a->time) a->act_time = a->time;
 
-                int32_t new_value;
+                int16_t new_value;
                 new_value = a->path(a);
 
                 if(a->fp != NULL) a->fp(a->var, new_value); /*Apply the calculated value*/
@@ -433,7 +433,7 @@ static bool anim_ready_handler(lv_anim_t * a)
             /*Toggle the play back state*/
             a->playback_now = a->playback_now == 0 ? 1 : 0;
             /*Swap the start and end values*/
-            int32_t tmp;
+            int16_t tmp;
             tmp = a->start;
             a->start = a->end;
             a->end = tmp;

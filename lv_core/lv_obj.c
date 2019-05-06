@@ -1246,32 +1246,32 @@ void lv_obj_animate(lv_obj_t * obj, lv_anim_builtin_t type, uint16_t time, uint1
     /*Init to ANIM_IN*/
     switch(type) {
         case LV_ANIM_FLOAT_LEFT:
-            a.fp = (void(*)(void *, int32_t))lv_obj_set_x;
+            a.fp = (lv_anim_fp_t)lv_obj_set_x;
             a.start = -lv_obj_get_width(obj);
             a.end = lv_obj_get_x(obj);
             break;
         case LV_ANIM_FLOAT_RIGHT:
-            a.fp = (void(*)(void *, int32_t))lv_obj_set_x;
+            a.fp = (lv_anim_fp_t)lv_obj_set_x;
             a.start = lv_obj_get_width(par);
             a.end = lv_obj_get_x(obj);
             break;
         case LV_ANIM_FLOAT_TOP:
-            a.fp = (void(*)(void *, int32_t))lv_obj_set_y;
+            a.fp = (lv_anim_fp_t)lv_obj_set_y;
             a.start = -lv_obj_get_height(obj);
             a.end = lv_obj_get_y(obj);
             break;
         case LV_ANIM_FLOAT_BOTTOM:
-            a.fp = (void(*)(void *, int32_t))lv_obj_set_y;
+            a.fp = (lv_anim_fp_t)lv_obj_set_y;
             a.start = lv_obj_get_height(par);
             a.end = lv_obj_get_y(obj);
             break;
         case LV_ANIM_GROW_H:
-            a.fp = (void(*)(void *, int32_t))lv_obj_set_width;
+            a.fp = (lv_anim_fp_t)lv_obj_set_width;
             a.start = 0;
             a.end = lv_obj_get_width(obj);
             break;
         case LV_ANIM_GROW_V:
-            a.fp = (void(*)(void *, int32_t))lv_obj_set_height;
+            a.fp = (lv_anim_fp_t)lv_obj_set_height;
             a.start = 0;
             a.end = lv_obj_get_height(obj);
             break;
